@@ -1,0 +1,686 @@
+[
+    {
+        "id": "19e85b17e8f1d4c5",
+        "type": "tab",
+        "label": "jankengun",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "63585c8101644f02",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/hit",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 60,
+        "y": 580,
+        "wires": [
+            [
+                "676f1718c42eef04",
+                "9865b943fa91df32"
+            ]
+        ]
+    },
+    {
+        "id": "f3fd5cdd1ee01f78",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/score/:pid",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 80,
+        "y": 740,
+        "wires": [
+            [
+                "4a0b16aad476cbd0"
+            ]
+        ]
+    },
+    {
+        "id": "4d1d0959c7241a33",
+        "type": "kintone",
+        "z": "19e85b17e8f1d4c5",
+        "name": "fetch score",
+        "config": "dd33eeebde491733",
+        "appId": "8",
+        "query": "",
+        "records": "",
+        "method": "GET",
+        "x": 430,
+        "y": 740,
+        "wires": [
+            [
+                "ab30d4bb685144e3"
+            ]
+        ]
+    },
+    {
+        "id": "8089db8b0bb51705",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 810,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "4a0b16aad476cbd0",
+        "type": "template",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "id = \"{{req.params.pid}}\"",
+        "output": "str",
+        "x": 260,
+        "y": 740,
+        "wires": [
+            [
+                "4d1d0959c7241a33"
+            ]
+        ]
+    },
+    {
+        "id": "2ecfc5e84c6921d2",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/player/new",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 420,
+        "wires": [
+            [
+                "34dc351a0fde6269"
+            ]
+        ]
+    },
+    {
+        "id": "1d22c5f8480cea40",
+        "type": "kintone",
+        "z": "19e85b17e8f1d4c5",
+        "name": "register player",
+        "config": "dd33eeebde491733",
+        "appId": "8",
+        "query": "",
+        "records": "",
+        "method": "POST",
+        "x": 540,
+        "y": 420,
+        "wires": [
+            [
+                "6b920e45a1744e9b"
+            ]
+        ]
+    },
+    {
+        "id": "ee86aa8820d94864",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 910,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "29d74ab95f73e0b0",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/ui/entry",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 140,
+        "wires": [
+            [
+                "a4a80688117f0aa6"
+            ]
+        ]
+    },
+    {
+        "id": "a4a80688117f0aa6",
+        "type": "template",
+        "z": "19e85b17e8f1d4c5",
+        "name": "エントリー画面",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html lang=\"ja\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>エントリー</title>\n    <style>\n        body {\n            font-family: 'Press Start 2P', cursive, Arial, sans-serif;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            height: 100vh;\n            background: radial-gradient(circle, #1a1a1d, #4e4e50);\n            margin: 0;\n            color: #fff;\n        }\n\n        form {\n            background: rgba(0, 0, 0, 0.8);\n            padding: 20px;\n            border-radius: 10px;\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);\n            width: 300px;\n        }\n\n        label {\n            display: block;\n            margin-bottom: 8px;\n            font-weight: bold;\n        }\n\n        input[type=\"text\"],\n        input[type=\"submit\"] {\n            width: 100%;\n            padding: 10px;\n            margin-bottom: 10px;\n            border: 1px solid #ccc;\n            border-radius: 3px;\n            box-sizing: border-box;\n        }\n\n        input[type=\"text\"] {\n            background-color: #333;\n            color: #fff;\n        }\n\n        input[type=\"submit\"] {\n            background-color: #00a8ff;\n            color: #fff;\n            border: none;\n            cursor: pointer;\n            transition: background-color 0.3s;\n            text-transform: uppercase;\n        }\n\n        input[type=\"submit\"]:hover {\n            background-color: #0097e6;\n        }\n    </style>\n</head>\n\n<body>\n    <form id=\"myForm\">\n        <label for=\"name\">名前:</label>\n        <input type=\"text\" id=\"name\" name=\"name\">\n        <input type=\"submit\" value=\"送信\">\n    </form>\n    <script>\n        document.getElementById('myForm').onsubmit = function(event) {\n            event.preventDefault();\n\n            const name = document.getElementById('name').value;\n            if (name === '') {\n                alert('名前を入力してください。');\n                return false;\n            }\n\n            fetch('/player/new', {\n                method: 'POST',\n                headers: {\n                    'Content-Type': 'application/json',\n                },\n                body: JSON.stringify({\n                    name\n                })\n            }).then((res) =>\n                res.json()\n            ).then((res) => {\n                alert('登録完了');\n                document.location = `/ui/game?playerId=${res.playerId}`;\n            });\n        };\n    </script>\n</body>\n\n</html>",
+        "output": "str",
+        "x": 440,
+        "y": 140,
+        "wires": [
+            [
+                "9b0b770106ee1deb"
+            ]
+        ]
+    },
+    {
+        "id": "9b0b770106ee1deb",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 590,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "6b920e45a1744e9b",
+        "type": "function",
+        "z": "19e85b17e8f1d4c5",
+        "name": "concat player id",
+        "func": "const payload = msg.payload;\nconst playerName = global.get('playerName')\nreturn {\n    ...msg,\n    payload: {\n        playerName,\n        playerId: payload.ids[0]\n    }\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 420,
+        "wires": [
+            [
+                "ee86aa8820d94864"
+            ]
+        ]
+    },
+    {
+        "id": "13369dc672d679b8",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/ui/game",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 220,
+        "wires": [
+            [
+                "86a0f9685f80f02d"
+            ]
+        ]
+    },
+    {
+        "id": "86a0f9685f80f02d",
+        "type": "template",
+        "z": "19e85b17e8f1d4c5",
+        "name": "ゲーム画面",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "plain",
+        "template": "<!DOCTYPE html>\n<html lang=\"ja\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>カウントダウンタイマーとスコア</title>\n    <style>\n        body {\n            font-family: 'Press Start 2P', cursive, Arial, sans-serif;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            height: 100vh;\n            background: radial-gradient(circle, #1a1a1d, #4e4e50);\n            margin: 0;\n            color: #fff;\n        }\n\n        #container {\n            text-align: center;\n            background: rgba(0, 0, 0, 0.8);\n            padding: 40px;\n            border-radius: 10px;\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);\n            width: 400px;\n        }\n\n        #time {\n            font-size: 72px;\n            margin-bottom: 30px;\n            color: #e94560;\n            text-shadow: 2px 2px #333;\n        }\n\n        #score {\n            font-size: 48px;\n            margin-bottom: 30px;\n            color: #0fbcf9;\n            text-shadow: 2px 2px #333;\n        }\n\n        button {\n            padding: 15px 30px;\n            font-size: 20px;\n            background-color: #00a8ff;\n            color: #fff;\n            border: none;\n            border-radius: 5px;\n            cursor: pointer;\n            transition: background-color 0.3s;\n            text-transform: uppercase;\n            margin: 10px;\n        }\n\n        button:hover {\n            background-color: #0097e6;\n        }\n\n        #rankingButton {\n            display: none;\n        }\n    </style>\n</head>\n\n<body>\n    <div id=\"container\">\n        <div id=\"time\">50.000</div>\n        <div id=\"score\">現在のスコア: 0</div>\n        <button id=\"startButton\">スタート</button>\n        <button id=\"rankingButton\">ランキング画面へ移動</button>\n    </div>\n    <script>\n        const urlParams = new URLSearchParams(window.location.search);\n        const playerId = urlParams.get('playerId');\n        function startGame() {\n            const startButton = document.getElementById('startButton')\n            startButton.style.display = 'none'; // スタートボタンを非表示にする\n            \n            let timeLeft = 50 * 1000; // 残り時間をミリ秒で管理\n            const timeDisplay = document.getElementById('time');\n            timeDisplay.textContent = (timeLeft / 1000).toFixed(3);\n\n            const scoreDisplay = document.getElementById('score');\n\n            const pollingScore = setInterval(function() {\n                fetch(`/score/${playerId}`, {\n                    method: 'GET',\n                }).then((res) =>\n                    res.json()\n                ).then((res) => {\n                    scoreDisplay.textContent = `現在のスコア: ${res.score}`\n                })\n            }, 100)\n            \n            // カウントダウンを開始\n            const countdown = setInterval(function() {\n                timeLeft -= 10; // 10ミリ秒ずつ減少\n                timeDisplay.textContent = (timeLeft / 1000).toFixed(3);\n                \n                if (timeLeft <= 0) {\n                    clearInterval(countdown);\n                    clearInterval(pollingScore)\n                    timeDisplay.textContent='終了！！！' ; // タイマー終了時\n                    fetch('/player', {\n                        method: 'PUT',\n                        headers: {\n                            'Content-Type': 'application/json',\n                        },\n                        body: JSON.stringify({\n                            playerId,\n                            state: 'wait'\n                        })\n                    }).then(() =>\n                        document.getElementById('rankingButton').style.display='inline'\n                    );          \n                } \n            }, 10);\n        }\n        document.getElementById('startButton').addEventListener('click', function() {\n            fetch('/player', {\n                method: 'PUT',\n                headers: {\n                    'Content-Type': 'application/json',\n                },\n                body: JSON.stringify({\n                    playerId,\n                    state: 'start'\n                })\n            }).then(() =>\n                startGame()\n            )\n        });\n\n        // ランキングボタンのクリックイベント\n        document.getElementById('rankingButton').addEventListener('click', async function() {\n            await fetch('/player', {\n                method: 'PUT',\n                headers: {\n                    'Content-Type': 'application/json',\n                },\n                    body: JSON.stringify({\n                    playerId,\n                    state: 'end'\n                })\n            });\n            document.location = `/ui/rank?playerId=${playerId}`;\n        });\n    </script>\n</body>\n\n</html>",
+        "output": "str",
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "d6197be8801bbc25"
+            ]
+        ]
+    },
+    {
+        "id": "d6197be8801bbc25",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 590,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "25f339d78df23b29",
+        "type": "comment",
+        "z": "19e85b17e8f1d4c5",
+        "name": "UI",
+        "info": "",
+        "x": 170,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4ad5b3ef04b3ae31",
+        "type": "comment",
+        "z": "19e85b17e8f1d4c5",
+        "name": "API",
+        "info": "",
+        "x": 150,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "d4ba9051523bf259",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/ui/rank",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 280,
+        "wires": [
+            [
+                "1c1f73a1c3df851c"
+            ]
+        ]
+    },
+    {
+        "id": "1c1f73a1c3df851c",
+        "type": "template",
+        "z": "19e85b17e8f1d4c5",
+        "name": "ランキング画面",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "plain",
+        "template": "<!DOCTYPE html>\n<html lang=\"ja\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ランキング表示ページ</title>\n    <style>\n        body {\n            font-family: 'Press Start 2P', cursive, Arial, sans-serif;\n            margin: 0;\n            padding: 0;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            height: 100vh;\n            background: radial-gradient(circle, #1a1a1d, #4e4e50);\n            color: #fff;\n        }\n\n        .ranking-container {\n            background: rgba(0, 0, 0, 0.8);\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);\n            border-radius: 10px;\n            padding: 20px;\n            width: 80%;\n            max-width: 600px;\n            position: relative;\n            text-align: center;\n        }\n\n        h1 {\n            margin-bottom: 20px;\n            text-shadow: 2px 2px #333;\n        }\n\n        ol {\n            list-style: none;\n            padding: 0;\n            text-align: left;\n        }\n\n        li {\n            padding: 10px;\n            border-bottom: 1px solid #444;\n        }\n\n        li:last-child {\n            border-bottom: none;\n        }\n\n        .player-name {\n            font-weight: bold;\n        }\n\n        .player-score {\n            float: right;\n        }\n\n        .highlight {\n            background-color: #ffcc00;\n            color: #000;\n        }\n\n        .back-button {\n            position: absolute;\n            top: 10px;\n            left: 10px;\n            padding: 10px 20px;\n            background-color: #00a8ff;\n            color: #fff;\n            border: none;\n            border-radius: 5px;\n            cursor: pointer;\n            transition: background-color 0.3s;\n            text-transform: uppercase;\n        }\n\n        .back-button:hover {\n            background-color: #0097e6;\n        }\n    </style>\n</head>\n\n<body>\n    <div class=\"ranking-container\">\n        <button class=\"back-button\" onclick=\"goBack()\">戻る</button>\n        <h1>ランキング</h1>\n        <ol id=\"ranking-list\"></ol>\n    </div>\n\n    <script>\n        // URLパラメータからplayerIdを取得\n        const urlParams = new URLSearchParams(window.location.search);\n        const playerId = urlParams.get('playerId');\n\n        document.addEventListener(\"DOMContentLoaded\", () => {\n            fetch('/ranking', {\n                method: 'GET',\n            }).then((res) =>\n                res.json()\n            ).then((res) => {\n                // ソートされたデータをランキングとして表示\n                const rankingList = document.getElementById(\"ranking-list\");\n                res.forEach((player, index) => {\n                    const listItem = document.createElement(\"li\");\n                    listItem.innerHTML =\n                    `<span class=\"player-name\">${index + 1}. ${player.playerName}</span><span class=\"player-score\">${player.score}</span>`;\n                    if (playerId && playerId === player.playerId) {\n                        listItem.classList.add(\"highlight\");\n                    }\n                    rankingList.appendChild(listItem);\n                });\n            })\n        });\n\n        function goBack() {\n            window.location.href = '/ui/entry';\n        }\n    </script>\n</body>\n\n</html>",
+        "output": "str",
+        "x": 420,
+        "y": 280,
+        "wires": [
+            [
+                "e702ba550049f896"
+            ]
+        ]
+    },
+    {
+        "id": "e702ba550049f896",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 590,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ab30d4bb685144e3",
+        "type": "function",
+        "z": "19e85b17e8f1d4c5",
+        "name": "concat score",
+        "func": "const record = msg.payload.records[0]\nif (!record) {\n    return {\n        ...msg,\n        payload: {}\n    }\n}\nreturn {\n    ...msg,\n    payload: {\n        score: record.score.value,\n    }\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 740,
+        "wires": [
+            [
+                "8089db8b0bb51705"
+            ]
+        ]
+    },
+    {
+        "id": "9caa8719e0bbc0bb",
+        "type": "kintone",
+        "z": "19e85b17e8f1d4c5",
+        "name": "fetch current",
+        "config": "dd33eeebde491733",
+        "appId": "8",
+        "query": "state = \"start\" or state = \"wait\" order by createdAt desc limit 1",
+        "records": "",
+        "method": "GET",
+        "x": 450,
+        "y": 580,
+        "wires": [
+            [
+                "5e256d42cd669e7e"
+            ]
+        ]
+    },
+    {
+        "id": "5e256d42cd669e7e",
+        "type": "function",
+        "z": "19e85b17e8f1d4c5",
+        "name": "calc score",
+        "func": "const record = msg.payload.records[0]\nif (!record) {\n    return {\n        msg,\n        payload: 'not found',\n    };\n}\nconst id = record.id.value\nlet score = Number(record.score.value)\nconst result = global.get('result')\nif (result === 'win') {\n    score += 1;\n} else if (result === 'victory') {\n    score += 2;\n}\nreturn {\n    msg,\n    payload: [{\n        id,\n        record: {\n            score: {\n                value: score\n            }\n        }\n    }],\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 580,
+        "wires": [
+            [
+                "258463e92c467f07"
+            ]
+        ]
+    },
+    {
+        "id": "9865b943fa91df32",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 250,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "057e1aa13b7acbe3",
+        "type": "kintone",
+        "z": "19e85b17e8f1d4c5",
+        "name": "update score",
+        "config": "dd33eeebde491733",
+        "appId": "8",
+        "query": "",
+        "records": "",
+        "method": "PUT",
+        "x": 990,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "34dc351a0fde6269",
+        "type": "function",
+        "z": "19e85b17e8f1d4c5",
+        "name": "convert record",
+        "func": "const name = msg.payload.name\nglobal.set('playerName', name)\nreturn {\n    ...msg,\n    payload: [\n        {\n            name : { value : name}\n        }\n    ]\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 420,
+        "wires": [
+            [
+                "1d22c5f8480cea40"
+            ]
+        ]
+    },
+    {
+        "id": "15f1edac382bd28a",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/player",
+        "method": "put",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 480,
+        "wires": [
+            [
+                "f44294540959bbae",
+                "3bd23aa75d135704"
+            ]
+        ]
+    },
+    {
+        "id": "f44294540959bbae",
+        "type": "function",
+        "z": "19e85b17e8f1d4c5",
+        "name": "convert record",
+        "func": "const playerId = msg.payload.playerId\nconst state = msg.payload.state\nreturn {\n    ...msg,\n    payload: [\n        {\n            id: playerId,\n            record: {\n                state : { value : state }\n            }\n        }\n    ]\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 480,
+        "wires": [
+            [
+                "d1f60f8924280fb1"
+            ]
+        ]
+    },
+    {
+        "id": "676f1718c42eef04",
+        "type": "function",
+        "z": "19e85b17e8f1d4c5",
+        "name": "cache result",
+        "func": "global.set('result', msg.payload.result)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 580,
+        "wires": [
+            [
+                "9caa8719e0bbc0bb"
+            ]
+        ]
+    },
+    {
+        "id": "d1f60f8924280fb1",
+        "type": "kintone",
+        "z": "19e85b17e8f1d4c5",
+        "name": "update state",
+        "config": "dd33eeebde491733",
+        "appId": "8",
+        "query": "",
+        "records": "",
+        "method": "PUT",
+        "x": 570,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3bd23aa75d135704",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 330,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "8aac977fe5f521c0",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/ranking",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 90,
+        "y": 820,
+        "wires": [
+            [
+                "5c8768268e37689f"
+            ]
+        ]
+    },
+    {
+        "id": "5c8768268e37689f",
+        "type": "kintone",
+        "z": "19e85b17e8f1d4c5",
+        "name": "fetch all",
+        "config": "dd33eeebde491733",
+        "appId": "8",
+        "query": "state = \"end\"",
+        "records": "",
+        "method": "GET",
+        "x": 300,
+        "y": 820,
+        "wires": [
+            [
+                "0fd8e1a352268b5d"
+            ]
+        ]
+    },
+    {
+        "id": "0fd8e1a352268b5d",
+        "type": "function",
+        "z": "19e85b17e8f1d4c5",
+        "name": "convert ranking records",
+        "func": "const records = msg.payload.records\nreturn {\n    ...msg,\n    payload: records.map((record) => ({\n        playerId: record.id.value,\n        playerName: record.name.value,\n        score: Number(record.score.value)\n    })).sort((a, b) => b.score - a.score)\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 820,
+        "wires": [
+            [
+                "d7a5da9ebd51d9f0"
+            ]
+        ]
+    },
+    {
+        "id": "d7a5da9ebd51d9f0",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 770,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "f8404242ac58bd9b",
+        "type": "http in",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "url": "/state",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 100,
+        "y": 900,
+        "wires": [
+            [
+                "bb94f2226910384b"
+            ]
+        ]
+    },
+    {
+        "id": "bb94f2226910384b",
+        "type": "kintone",
+        "z": "19e85b17e8f1d4c5",
+        "name": "fetch current",
+        "config": "dd33eeebde491733",
+        "appId": "8",
+        "query": "order by createdAt desc limit 1",
+        "records": "",
+        "method": "GET",
+        "x": 310,
+        "y": 900,
+        "wires": [
+            [
+                "65ee666b80387238"
+            ]
+        ]
+    },
+    {
+        "id": "65ee666b80387238",
+        "type": "function",
+        "z": "19e85b17e8f1d4c5",
+        "name": "concat state",
+        "func": "const record = msg.payload.records[0]\nreturn {\n    ...msg,\n    payload: {\n        state: record.state.value,\n    }\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 900,
+        "wires": [
+            [
+                "7e27be34b8cf78c8"
+            ]
+        ]
+    },
+    {
+        "id": "7e27be34b8cf78c8",
+        "type": "http response",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 730,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "258463e92c467f07",
+        "type": "switch",
+        "z": "19e85b17e8f1d4c5",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "not found",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 810,
+        "y": 580,
+        "wires": [
+            [
+                "66d5d826968fbc26"
+            ],
+            [
+                "057e1aa13b7acbe3"
+            ]
+        ]
+    },
+    {
+        "id": "66d5d826968fbc26",
+        "type": "debug",
+        "z": "19e85b17e8f1d4c5",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "dd33eeebde491733",
+        "type": "kintone-config",
+        "name": "techseeker"
+    }
+]
