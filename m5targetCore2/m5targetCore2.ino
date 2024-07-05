@@ -23,6 +23,13 @@ extern uint8_t win[];
 extern uint8_t lose[];
 extern uint8_t draw[];
 extern uint8_t jankengun[];
+// サウンド用
+// extern unsigned char draw_sound_raw[];
+// extern unsigned int draw_sound_raw_len;
+// extern unsigned char win_sound_raw[];
+// extern unsigned int win_sound_raw_len;
+// extern unsigned char lose_sound_raw[];
+// extern unsigned int lose_sound_raw_len;
 
 extern char *ssid;
 extern char *password;
@@ -64,18 +71,18 @@ void setup()
 {
   M5.begin();
   M5.Lcd.drawJpg(jankengun, 9050, 0, 0);
+  // M5.Spk.begin();
   Serial.begin(115200);
-  irrecv.enableIRIn(); // Start the receiver
+  irrecv.enableIRIn();
   while (!Serial) delay(50);
   wifiMulti.addAP(ssid, password);
   Serial.println("wifi connecting");
   while (wifiMulti.run() != WL_CONNECTED) delay(50);
   Serial.println("wifi connected");
-  randomSeed(analogRead(0)); // 乱数シードを設定
+  randomSeed(analogRead(0));
 }
 
 int janken;
-bool statu = true;
 unsigned long old_time = millis();
 void loop()
 {
@@ -115,6 +122,7 @@ void loop()
       Serial.println("draw");
       post("draw");
       M5.Lcd.drawJpg(draw, 7125, 0, 0);
+      // M5.Spk.PlaySound(draw_sound_raw, draw_sound_raw_len);
     }
     // 勝ち
     else if (results.value == IRcode[0] && janken == 1 ||
@@ -124,6 +132,7 @@ void loop()
       Serial.println("win");
       post("win");
       M5.Lcd.drawJpg(win, 7416, 0, 0);
+      // M5.Spk.PlaySound(win_sound_raw, win_sound_raw_len);
     }
     // 負け
     else if (results.value == IRcode[0] ||
@@ -133,6 +142,7 @@ void loop()
       Serial.println("lose");
       post("lose");
       M5.Lcd.drawJpg(lose, 7692, 0, 0);
+      // M5.Spk.PlaySound(lose_sound_raw, lose_sound_raw_len);
     }
     // うまく読めていないor別の信号を受け取った
     else
@@ -141,5 +151,4 @@ void loop()
     }
     irrecv.resume(); // Receive the next value
   }
-  delay(100);
 }
