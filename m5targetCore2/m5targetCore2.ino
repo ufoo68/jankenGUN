@@ -139,5 +139,6 @@ void loop()
       Serial.println("recieved incorrect code");
     }
     irrecv.resume(); // Receive the next value
+    delay(100);
   }
 }
